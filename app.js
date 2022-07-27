@@ -9,6 +9,7 @@ const fileUpload = require("express-fileupload");
 
 const indexRouter = require('./routes/index');
 const adminRouter = require('./routes/admin');
+const apiRouter = require('./routes/api');
 
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(session({secret:'my pet name is shanky',saveUninitialized: true,resave: 
 app.use(fileUpload());
 
 app.use('/admin', adminRouter);
+app.use('/api', apiRouter);
 app.use('/', indexRouter);
 
 
@@ -42,7 +44,9 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
+ if(res.status(err.status || 500))
+  res.render('505')
+  else
   res.render('404')
 });
 
